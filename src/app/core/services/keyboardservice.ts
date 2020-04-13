@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 import { ipcRenderer, webFrame, remote } from 'electron';
 import * as childProcess from 'child_process';
 import * as fs from 'fs';
+import * as ioHook from 'iohook'
 import {SharedService} from './Sharedservice';
 //import {SharedService} from 'src/app/core/services/Sharedservice';
 //import {iohook} from 'iohook'
@@ -18,7 +19,7 @@ export class KeyboardService {
   remote: typeof remote;
   childProcess: typeof childProcess;
   fs: typeof fs;
-  ioHook: any;
+  //ioHook: any;
   main_key: any;
   response:any;
 
@@ -36,7 +37,7 @@ export class KeyboardService {
       this.childProcess = window.require('child_process');
       this.fs = window.require('fs');
     }
-    this.ioHook = window.require('iohook');
+  //  this.ioHook = require('iohook');
     this.response= this.sharedservice.readSetting();
  //   main_key=0;
    setInterval(()=>{
@@ -48,19 +49,22 @@ export class KeyboardService {
      }
     this.main_key="";
    },this.response.Keyboard)
-   this.ioHook.on('keydown', function(e)
+   ioHook.on('keydown', function(e)
    {
-   
+    console.log("response");
+    console.log("keypressed");
     if(this.response.KeyboardEnable==true)
     {
      
          this.main_key++;
+         console.log("response");
+         console.log("keypressed");
     }
    });
    
-   this.ioHook.start();
+   ioHook.start();
    
-   this.ioHook.start(true);
+   ioHook.start(true);
   }
    
 //  this.response= this.sharedservice.readSetting();
